@@ -18,6 +18,11 @@ class StudentController extends Controller
             ->when(request('college_id'), function ($query) {
                return $query->where('college_id', request('college_id'));
             })
+            ->when(request('sort'), function ($query) {
+               return $query->orderBy('name', request('sort'));
+            }, function ($query) {
+               return $query->orderBy('name', 'asc'); 
+            })
             ->with('college') 
             ->get();
 
