@@ -19,6 +19,10 @@ class Student extends Model
         'college_id',
     ];
 
+    protected $casts = [
+        'dob' => 'date'
+    ];
+
     public function college()
     {
         return $this->belongsTo(College::class, 'college_id');
