@@ -19,16 +19,16 @@ class CollegeController extends Controller
         return view('colleges.create');
     }
 
-     // Show the form to edit a college
-     public function edit(College $college)
-     {
-         return view('colleges.edit', compact('college'));
-     }
- 
      // Delete a college
      public function destroy(College $college)
      {
          $college->delete();
          return redirect()->route('colleges.index');
+     }
+     
+     // Show the form to edit a college
+     public function edit(College $college)
+     {
+         return view('colleges.edit', compact('college'));
      }
 }
