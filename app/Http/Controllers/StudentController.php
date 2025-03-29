@@ -12,7 +12,16 @@ class StudentController extends Controller
       public function index()
       {
          $students = Student::all();
-         return view('students.index', compact('students'));
+         $colleges = College::all();
+
+         $students = Student::query()
+            ->when(request('college_id'), function ($query) {
+               return $query->where('college_id', request('college_id'));
+            })
+            ->with('college') 
+            ->get();
+
+         return view('students.index', compact('students', 'colleges'));
       }
  
       // Show the form to create a new student

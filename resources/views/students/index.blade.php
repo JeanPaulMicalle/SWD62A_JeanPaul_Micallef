@@ -13,6 +13,19 @@
                 Add Student
             </a>
         </div>
+        <div>
+                <form action="{{ route('students.index') }}" method="GET" class="d-inline me-3">
+                    <select name="college_id" class="form-select d-inline-block w-auto" onchange="this.form.submit()">
+                        <option value="">All Colleges</option>
+                        @foreach($colleges as $college)
+                            <option value="{{ $college->id }}" {{ request('college_id') == $college->id ? 'selected' : '' }}>
+                                {{ $college->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
+        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-striped">
