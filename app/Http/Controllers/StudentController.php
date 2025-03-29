@@ -46,41 +46,50 @@ class StudentController extends Controller
       // Delete a student
       public function destroy(Student $student)
       {
-         $student->delete();
-         return redirect()->route('students.index');
-     }
+         try{
+            $student->delete();
+            return redirect()->route('students.index')->with('success', 'Student deleted successfully!');
+         } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error deleting student: ' . $e->getMessage());
+         }
+      }
 
       public function update(Request $request, Student $student)
       {
-         // Debug
-         logger('Update Request Data:', $request->all());
+         try{
+            $validatedData = $request->validate([
+               'name' => 'required',
+               'email' => 'required|email',
+               'phone' => 'required|digits:8',
+               'dob' => 'required|date',
+               'college_id' => 'required|exists:colleges,id'
+            ]);
 
-         $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required|digits:8',
-            'dob' => 'required|date',
-            'college_id' => 'required|exists:colleges,id'
-         ]);
+            $student->update($validatedData);
 
-         $student->update($validatedData);
-
-         return redirect()->route('students.index')->with('success', 'Student updated successfully');
+            return redirect()->route('students.index')->with('success', 'Student updated successfully!');
+         } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error updating student: ' . $e->getMessage());
+         }
       }
 
       // Handle new student creation form submission
       public function store(Request $request)
       {
-         $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:students',
-            'phone' => 'required',
-            'dob' => 'required|date',
-            'college_id' => 'required|exists:colleges,id'
-         ]);
+         try{
+            $validatedData = $request->validate([
+               'name' => 'required',
+               'email' => 'required|email|unique:students',
+               'phone' => 'required',
+               'dob' => 'required|date',
+               'college_id' => 'required|exists:colleges,id'
+            ]);
 
          Student::create($validatedData);
 
-         return redirect()->route('students.index')->with('success', 'Student created successfully');
+            return redirect()->route('students.index')->with('success', 'Student created successfully!');
+         } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error adding student: ' . $e->getMessage());
+         }
       }
 }
