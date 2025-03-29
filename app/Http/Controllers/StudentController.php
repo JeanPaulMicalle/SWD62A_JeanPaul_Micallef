@@ -58,7 +58,7 @@ class StudentController extends Controller
          $validatedData = $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'phone' => 'required',
+            'phone' => 'required|digits:8',
             'dob' => 'required|date',
             'college_id' => 'required|exists:colleges,id'
          ]);
