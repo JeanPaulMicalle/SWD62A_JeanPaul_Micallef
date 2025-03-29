@@ -36,26 +36,34 @@ class CollegeController extends Controller
 
     public function update(Request $request, College $college)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255'
-        ]);
+        try{
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'address' => 'required|string|max:255'
+            ]);
 
-        $college->update($validatedData);
+            $college->update($validatedData);
 
-        return redirect()->route('colleges.index')->with('success', 'College updated successfully');
+            return redirect()->route('colleges.index')->with('success', 'College updated successfully');
+        }catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error adding college: ' . $e->getMessage());
+        }
     }
 
     // Handle new college creation form submission
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255|unique:colleges,name',
-            'address' => 'required|string|max:255'
-        ]);
+        try{
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255|unique:colleges,name',
+                'address' => 'required|string|max:255'
+            ]);
     
-        College::create($validatedData);
+            College::create($validatedData);
     
-        return redirect()->route('colleges.index')->with('success', 'College created successfully');
+            return redirect()->route('colleges.index')->with('success', 'College created successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error adding college: ' . $e->getMessage());
+        }
     }
 }

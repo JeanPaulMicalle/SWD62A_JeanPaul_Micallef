@@ -21,7 +21,8 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="phone" class="form-label">Phone</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
+                        <input type="tel" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" pattern="\d{8}" title="Please enter exactly 8 digits" required>
+                        @error('phone')<div class="invalid-feedback">Phone must be exactly 8 digits</div>@enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="dob" class="form-label">Date of Birth</label>
